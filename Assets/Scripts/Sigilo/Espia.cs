@@ -22,4 +22,11 @@ public class Espia : MonoBehaviour
         }
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
     }
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == ("Guardia"))
+        {
+            transform.position = new Vector3(-11, -5, 0);
+        }
+    }
 }
