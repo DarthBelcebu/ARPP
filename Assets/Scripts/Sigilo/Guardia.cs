@@ -8,32 +8,32 @@ public class Guardia : MonoBehaviour
     //variables del pursuit
     GameObject PursuitTarget = null;
     Rigidbody PursuitTargetRB = null;
-    public Rigidbody myRigidbody = null;
+    public Rigidbody2D myRigidbody = null;
     public float fMaxSpeed = 1.0f;
     public float fMaxForce = 0.5f;
     public float fPredictionSteps = 10.0f;
     public bool bUseArrive = true;
     public float fArriveRadius = 3.0f;
-    public enum SteeringB {none, Seek, Pursue}
+    public enum SteeringB { none, Seek, Pursue }
     public SteeringB currentBehavior = SteeringB.none;
     Vector3 v3TargetPosition = Vector3.zero;
-    
+
     public GameObject Vision; //el cono de vision
     public Transform player, Guard, Base; //localizaciones de cosas, base es el lugar donde esta el guardia
     Vector2 dir;//direccion del guardia
 
-    private float rotZ=-90; //se pone la rotacion para que el guardia gire
+    private float rotZ = -90; //se pone la rotacion para que el guardia gire
     [Range(0f, 360f)] //se limita lo de abajo a 0-360
     public float visionAngle = 53f, visionDistance = 10f; //angulo de vision y distancia 
-    
-    public float detectionTime=5, AlertTime, speed = 5, RotationSpeed; // tiempo de deteccion, de alerte, velocidad del guardia y velocidad de rotacion
-    
+
+    public float detectionTime = 5, AlertTime, speed = 5, RotationSpeed; // tiempo de deteccion, de alerte, velocidad del guardia y velocidad de rotacion
+
     public bool detected = false, alert = false; //bools para saber e que modo esta
     #endregion
 
     private void Start()
     {
-        myRigidbody = GetComponent<Rigidbody>();// rigidbody
+        myRigidbody = GetComponent<Rigidbody2D>();// rigidbody
         ConoDeVision.ColorC(); //se inicializa el color verde, otra vez
         StartCoroutine(Turn()); //se inicia el turn, es el metodo para que gire
     }
@@ -41,7 +41,7 @@ public class Guardia : MonoBehaviour
     private void Update()
     {
         Vector2 playerVector = player.position - Guard.position; //se compara la distancia que hay entre el jugador y el guardia
-        
+
         if (Vector3.Angle(playerVector.normalized, Guard.right) < visionAngle * 0.5f) //se compara la distancia en tre guardia y jugador para saber si esta en el angulo de vision
         {
             if (playerVector.magnitude < visionDistance) //si es menor:
@@ -68,12 +68,11 @@ public class Guardia : MonoBehaviour
         Vision.transform.localScale = new Vector3(7.5f, 5.5f, 1f); //se amplia la escala del cono de vision
         visionAngle = 70f; //se amplia el angulo de vision
         detectionTime -= Time.deltaTime;//tiempo de deteccion se resta al tiempo transurrido, solo si el jugador esta en el vector
-        yield return new WaitForSeconds(1.0f); //se espera por 1 segundo
-        Guard.position = Vector2.MoveTowards(Guard.position, player.position, speed * Time.deltaTime);
-        dir = player.position - Guard.position;
-        /*player.up = dir;
-        yield return new WaitForSeconds(3.0f);
-        ExitDetection();*/
+        yield return new WaitForSeconds(3.0f); //se espera por 1 segundo
+        Guard.position = Vector2.MoveTowards(Guard.position, player.position, speed * Time.deltaTime);//va a la posicion del jugador
+        Vector3 direction = player.position - Guard.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        myRigidbody.rotation = angle;
         yield return new WaitForSeconds(5.0f); //se espera por 5 segundos y
         ExitDetection(); //sale de ataque y deteccion
     }
@@ -167,13 +166,13 @@ public class Guardia : MonoBehaviour
     #endregion
     */
     #endregion
-    
+
     public void ExitDetection()
     {
         transform.position = Vector2.MoveTowards(Guard.position, Base.position, speed * Time.deltaTime); //se traslada a la posicion original
         Vision.transform.localScale = new Vector3(5.0f, 5.5f, 1f); //se disminuye la escala del cono de vision
         detected = false; //se ponen bools como falsos
-        alert = false; 
+        alert = false;
         ConoDeVision.ColorC(); //cono de vision de color verde
         visionAngle = 53f; //se disminuye el campo de vision
         StartCoroutine(Turn()); //se reinicia giro
@@ -187,7 +186,7 @@ public class Guardia : MonoBehaviour
             ExitDetection(); //se vuelve a modo normal
         }
     }
-    
+
     private void OnDrawGizmos()
     {
         if (visionAngle <= 0f) return;
@@ -199,7 +198,7 @@ public class Guardia : MonoBehaviour
         p1 = PointForAngle(halfVisionAngle, visionDistance); //mitad 1
         p2 = PointForAngle(-halfVisionAngle, visionDistance); //mitad 2
 
-        Gizmos.color = alert ? Color.red : detected ?  Color.yellow : Color.green;//se cambian de color los gizmos dependiendo el estado que tenga el guardia
+        Gizmos.color = alert ? Color.red : detected ? Color.yellow : Color.green;//se cambian de color los gizmos dependiendo el estado que tenga el guardia
         Gizmos.DrawLine(Guard.position, (Vector2)Guard.position + p1); //se dibuja la linea en el lado izquierdo del guardia
         Gizmos.DrawLine(Guard.position, (Vector2)Guard.position + p2); //lo mismo pero en derecha
 
