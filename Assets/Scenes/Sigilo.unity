@@ -496,45 +496,14 @@ GameObject:
   - component: {fileID: 1290775120}
   - component: {fileID: 1290775123}
   - component: {fileID: 1290775122}
-  - component: {fileID: 1290775119}
+  - component: {fileID: 1290775124}
   m_Layer: 0
   m_Name: Guard
-  m_TagString: Untagged
+  m_TagString: Guardia
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1290775119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1290775118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 364a734e426ad1b46b740ef97cd7f3ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myRigidbody: {fileID: 1290775123}
-  fMaxSpeed: 1
-  fMaxForce: 0.5
-  fPredictionSteps: 10
-  bUseArrive: 1
-  fArriveRadius: 3
-  currentBehavior: 0
-  Vision: {fileID: 95069955}
-  player: {fileID: 876654616}
-  Guard: {fileID: 1290775121}
-  Base: {fileID: 800280791}
-  visionAngle: 53
-  visionDistance: 5.5
-  detectionTime: 0
-  AlertTime: 0
-  speed: 3
-  RotationSpeed: 5
-  detected: 0
-  alert: 0
 --- !u!212 &1290775120
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -641,6 +610,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1290775124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290775118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06b991911baf8d4abe3f48decf8526d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myRigidbody: {fileID: 1290775123}
+  Vision: {fileID: 95069955}
+  player: {fileID: 876654616}
+  Guard: {fileID: 1290775121}
+  Base: {fileID: 800280791}
+  visionAngle: 53
+  visionDistance: 5.5
+  detectionTime: 1
+  AlertTime: 5
+  speed: 3
+  RotationSpeed: 0
+  detected: 0
+  alert: 0
+  turnAble: 1
 --- !u!1 &1480259474
 GameObject:
   m_ObjectHideFlags: 0

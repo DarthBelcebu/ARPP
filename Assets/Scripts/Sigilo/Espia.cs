@@ -22,11 +22,15 @@ public class Espia : MonoBehaviour
         }
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime); //se mueve hacia donde se hizo el click
     }
-    void OnCollisionEnter(Collision collision) 
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.tag == ("Guardia")) //si se coliciona con guardia:
         {
-            transform.position = new Vector3(-11, -5, 0); //se transportara hacia la esquina inferior derecha
+            Respawn();
         }
+    }
+    void Respawn()
+    {
+        transform.position = new Vector3(-11, -5, 0); //se transportara hacia la esquina inferior derecha
     }
 }
